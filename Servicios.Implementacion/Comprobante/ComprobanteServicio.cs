@@ -64,7 +64,7 @@ namespace Servicios.Implementacion.Comprobante
                     parametrosComprobante.Add("@Descuento", comprobante.Descuento);
                     parametrosComprobante.Add("@TotalIva", comprobante.Items.Sum(x => x.TotalIva));
                     parametrosComprobante.Add("@Fecha", DateTime.Now);
-                    parametrosComprobante.Add("@Tipo", comprobante.TipoComprobanteInt);
+                    parametrosComprobante.Add("@Tipo", comprobante.TipoComprobante);
                     parametrosComprobante.Add("@Estado", comprobante.EstadoComprobante);
 
                     var comprobanteId = await _db.QueryFirstOrDefaultAsync<long>(query, param: parametrosComprobante,

@@ -282,7 +282,7 @@ function Facturar() {
         array.push(articulo);
     });*/
 
-    let tipoComprobante = document.getElementById('cmbTipoComprobante').value;
+    let tipoComprobante = parseInt(document.getElementById('cmbTipoComprobante').value);
     let totalPagar = parseFloat(document.getElementById('pagaCon').value).toFixed(2);
     let descuento = parseFloat(CalcularDescuento(document.getElementById('descuento').value)).toFixed(2);
     let tipoPago = parseInt(document.getElementById('cmbTipoPago').value);
@@ -290,7 +290,7 @@ function Facturar() {
     let comprobante = {
         ClienteId: document.getElementById('cmbCliente').value,
         Numero: document.getElementById('numero').value,
-        TipoComprobanteInt: tipoComprobante,
+        TipoComprobante: tipoComprobante,
         Descuento: descuento,
         TotalPagar: totalPagar,
         TipoPago: tipoPago,
