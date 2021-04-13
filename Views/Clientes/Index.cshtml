@@ -1,0 +1,236 @@
+@model Servicios.Interface.Cliente.Cliente
+
+@{
+    ViewData["Title"] = "Clientes";
+}
+
+<button type="button" class="btn btn-danger cargarCombo">CARGAR</button>
+
+<div class="col-6 border" style="margin-left: 50%; transform:translateX(-50%);">
+    <form id="form">
+        <div style="padding:15px;">
+
+            <div class="alert alert-success alert-dismissible fade show" role="alert" id="msj-exito" style="display: none;">
+                <strong>Exito!</strong> El cliente fue registrado exitosamente
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            
+            <label>Nombre</label>
+            @Html.ValidationMessageFor(x => x.Nombre)
+            <input type="text" class="form-control" name="Nombre" placeholder="Nombre...">
+
+            <label>Apellido</label>
+            @Html.ValidationMessageFor(x => x.Apellido)
+            <input type="text" class="form-control" name="Apellido">
+
+            <label>Dni</label>
+            <input type="number" class="form-control" name="Dni">
+
+            <div class="row">
+                <div class="col">
+                    <label>Provincia</label>
+                    <select class="form-control" id="cmbProvincia" name="Provincia">
+                        @foreach (var item in ViewBag.Provincias as
+                        IEnumerable<Servicios.Interface.Provincias.Provincia>)
+                        {
+                            <option value="@item.Id">@item.Descripcion</option>
+                        }
+                    </select>
+                </div>
+                <div class="col pr-1">
+                    <label>Localidad</label>
+                    <select class="form-control" name="LocalidadId" id="cmbLocalidad">
+
+                    </select>
+                </div>
+            </div>
+            <div class="pt-1 pb-1">
+                <label>Dirección</label>
+                @Html.ValidationMessageFor(x => x.Direccion)
+                <input type="text" class="form-control" name="Direccion" placeholder="Dirección...">
+            </div>
+
+            <div class="pt-1 pb-1">
+                <h4 class="text-center" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">CUENTA
+                </h4>
+                <hr>
+
+                <input data-val="true" data-val-required="The ActivarCtaCte field is required." id="cuenta"
+                    name="ActivarCtaCte" type="checkbox" value="true">
+                <label>Activar Cuenta Corriente</label>
+
+                <input data-val="true" data-val-required="The TieneLimite field is required." id="actLimite"
+                    name="TieneLimite" type="checkbox" value="true">
+                <label>¿Tiene limite de monto?</label>
+
+                <label>Limite</label>
+                <input type="number" class="form-control" style="display:none;" id="txtLimite" name="LimiteMonto">
+            </div>
+
+            <input type="submit" class="btn btn-success enviarFormulario" value="ENVIAR FORMULARIO">
+        </div>
+    </form>
+</div>
+
+<div class="row">
+    <div class="col-6">
+        <div style="padding:12px; text-align:center;">
+            <h3>NUEVO CLIENTE</h3>
+        </div>
+        <div class="pt-3 pb-3">
+            <label>Nombre</label>
+            <input type="text" class="form-control" id="txtNombre">
+            <div class="row">
+                <div class="col-5">
+                    <label>Provincia</label>
+                    <select class="form-control" id="cmbDatos"></select>
+                </div>
+                <div class="col-5">
+                    <label>Localidad</label>
+                    <select class="form-control">
+                        <option>Las Talitas</option>
+                        <option>Tafi Viejo</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-8 border pt-5 pb-5">
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    document.addEventListener('DOMContentLoaded', () => {
+        CargarLocalidades(document.getElementById('cmbProvincia').value);
+    });
+
+    document.getElementById('cmbProvincia').addEventListener('change', (e) => {
+        CargarLocalidades(e.target.value);
+    });
+
+    document.getElementById('actLimite').addEventListener('change', (e) => {
+        const checkeado = e.currentTarget.checked;
+        const inpLimite = document.getElementById('txtLimite');
+
+        if (checkeado){
+            inpLimite.style.display = 'block';
+        }else{
+            inpLimite.style.display = 'none';
+        }
+    });
+
+    const formulario = document.getElementById('form');
+
+    formulario.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const formData = new FormData(formulario);
+
+        fetch('/Clientes/AgregarCliente', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => {
+                if (response.status === 200) {
+                    response.json()
+                        .then(json => {
+                            if (json.finalizado) {
+                                document.getElementById('msj-exito').style.display = 'block';
+                                formulario.reset();
+                            } else {
+                                alert("Error");
+                            }
+                        })
+                }
+            })
+    });
+
+    function CargarLocalidades(provincia) {
+
+        const data = new FormData();
+        data.append('provincia', provincia);
+
+        const select = document.getElementById('cmbLocalidad');
+        select.innerHTML = '';
+
+        fetch('/Localidades/JsonLocalidadesProvincia', {
+            method: 'POST',
+            body: data
+        })
+            .then(response => {
+                if (response.status === 200) {
+                    response.json()
+                        .then(json => {
+                            json.localidades.forEach((indice) => {
+                                let option = document.createElement('option');
+
+                                option.text = indice.descripcion;
+                                option.value = indice.id;
+
+                                select.add(option);
+                            });
+                        })
+                } else {
+                    alert("No se pudieron obtener las localidades");
+                }
+            })
+            .catch((er) => {
+                console.log(er.message);
+            });
+    }
+
+    document.querySelector('.cargarCombo').addEventListener('click', () => { CargarCmb(); });
+
+    function CargarCmb() {
+        let combo = document.getElementById('cmbDatos');
+
+        let array = ["Rodrigo Exequiel, Gonzalez", "Chaves Jessica Fernanda", "Maria Cristina, Reinoso"];
+        // Me ordena alfabeticamente el array
+        array.sort();
+
+        array.forEach((indice) => {
+            let option = document.createElement('option');
+
+            option.text = indice;
+            combo.add(option);
+        });
+        /*
+        for(let value in array)
+        {
+            let option = document.createElement('option');
+
+            option.text = array[value];
+            combo.add(option);
+        }*/
+    }
+
+    function enviar() {
+
+        let obj = {
+            LocalidadId: 01,
+            Nombre: '',
+            Apellido: '',
+            Dni: 00,
+            Direccion: ''
+        }
+
+        let data = new FormData();
+        data.append('cliente', obj);
+
+        fetch('/Clientes/AgregarCliente', {
+            method: 'POST',
+            body: data
+        })
+            .then(response => response.json())
+            .then(json => {
+                if (!json.formCorrecto) {
+                    alert("Error!!!");
+                    console.log(json.campoRequerido);
+                    return;
+                }
+            });
+    }
+</script>

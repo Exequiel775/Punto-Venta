@@ -1,0 +1,37 @@
+@model Servicios.Interface.Marca.Marca
+
+@{
+    ViewData["Title"] = "Marquilla";
+}
+
+<div class="col-8 contenedor-form">
+    @using (Html.BeginForm("NuevaMarca", "ListasPrecio", FormMethod.Post, htmlAttributes: new { id ="form-marca" }))
+    {
+        <label>Descripción</label>
+        <label style="color:red">@Html.ValidationMessageFor(x => x.Descripcion)</label>
+        @Html.TextBoxFor(x => x.Descripcion, htmlAttributes: new { @class ="form-control", placeholder="Descripcion..." })
+
+        <label>Nombre</label>
+        <label style="color:red">@Html.ValidationMessageFor(x => x.Nombre)</label>
+        @Html.TextBoxFor(x => x.Nombre, htmlAttributes: new { @class ="form-control", placeholder="Nombre..." })
+
+        <div class="mt-4">
+            <input type="submit" class="btn btn-primary" value="AGREGAR">
+        </div>
+    }
+</div>
+
+<style type="text/css">
+.contenedor-form{
+    margin-left: 50%;
+    transform: translateX(-50%);
+}
+</style>
+
+<script type="text/javascript">
+const form = document.getElementById('form-marca');
+
+form.addEventListener('submit', (e)  => {
+
+});
+</script>

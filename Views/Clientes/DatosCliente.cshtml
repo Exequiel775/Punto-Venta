@@ -1,0 +1,13 @@
+@model Servicios.Interface.Persona.ClienteDto
+
+@{
+    ViewData["Title"] = Model.ApyNom;
+}
+
+<div class="border">
+    <div class="m-3">
+        <h5>Apellido y Nombre: <strong>@Model.ApyNom</strong></h5>
+        <h5>Dni: <strong>@Model.Dni</strong></h5>
+        <h5>Dire: <strong>@Model.Direccion</strong></h5>
+    </div>
+</div>

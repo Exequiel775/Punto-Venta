@@ -1,0 +1,141 @@
+@model IEnumerable<Servicios.Interface.DetalleComprobante.DetalleComprobante>
+
+@{
+    ViewData["Title"] = "Productos Mas Vendidos";
+    var _empleados = ViewBag.Empleados as IEnumerable<Servicios.Interface.Comprobante.Comprobante>;
+}
+
+<div class="row">
+    <div class="col-lg-4 col-sm-12 col-md-4 contenedores">
+        <div class="contenedores">
+            <div class="mensaje">
+                <h5>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="19" fill="currentColor"
+                        class="bi bi-grid-3x3-gap-fill" viewBox="0 0 16 16">
+                        <path
+                            d="M1 2a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V2zM1 7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V7zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V7zM1 12a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1v-2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-2z" />
+                    </svg>
+                    PRODUCTOS MAS VENDIDOS LA ULTIMA SEMANA
+                </h5>
+                <hr class="linea">
+            </div>
+            <div class="contenedor-tabla">
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Articulo</th>
+                                <th>Cantidad</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.Descripcion</td>
+                                    <td>@item.TotalVendido</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-lg-4 col-sm-12 col-md-4 contenedores">
+        <div class="contenedores">
+            <div class="mensaje">
+                <h5>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="19" fill="currentColor"
+                        class="bi bi-grid-3x3-gap-fill" viewBox="0 0 16 16">
+                        <path
+                            d="M1 2a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V2zM1 7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V7zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V7zM1 12a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1v-2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-2z" />
+                    </svg>
+                    EMPLEADOS QUE MAS VENDIERON LA ULTIMA SEMANA
+                </h5>
+                <hr class="linea">
+            </div>
+            <div class="contenedor-tabla">
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Empleado</th>
+                                <th>Cantidad</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in _empleados)
+                            {
+                                <tr>
+                                    <td>
+                                        <a href="#">@item.ApyNomEmpleado</a>
+                                    </td>
+                                    <td>@item.CantidadVendida</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 col-sm-12 col-md-4 contenedores">
+        <div class="mensaje">
+            <h5>
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="19" fill="currentColor"
+                    class="bi bi-grid-3x3-gap-fill" viewBox="0 0 16 16">
+                    <path
+                        d="M1 2a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V2zM1 7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V7zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V7zM1 12a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1v-2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-2z" />
+                </svg>
+                EMPLEADOS QUE MAS VENDIERON LA ULTIMA SEMANA
+            </h5>
+            <hr class="linea">
+        </div>
+        <div class="contenedor-tabla">
+            <div class="table-responsive">
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>Articulo</th>
+                            <th>Cantidad</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.Descripcion</td>
+                                <td>@item.TotalVendido</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style type="text/css">
+    .linea {
+        border: 2px solid rgba(50, 153, 255, 0.83);
+    }
+
+    .contenedor-tabla {
+        width: 100%;
+    }
+
+    .mensaje h5 {
+        font-weight: bold;
+        font-size: 18px;
+    }
+
+    body {
+        background-color: rgb(223, 224, 224)
+    }
+
+    .contenedores {
+        background: #fff;
+    }
+</style>

@@ -1,0 +1,131 @@
+@{
+    ViewData["Title"] = "Caja";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Cajas</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">XCommerce</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home"
+                                asp-action="Privacy">Privacy</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                                aria-haspopup="true" aria-expanded="false">Ventas</a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="/Venta/NuevaVenta">Nueva Venta</a>
+                                <a class="dropdown-item" href="#">Facturas</a>
+                                <a class="dropdown-item" href="/Venta/MasVendidos">Mas Vendido</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">Separated link</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container-fluid bg-white">
+        <div class="row">
+            <div class="col-12 col-lg-12 col-md-12 col-sm-12">
+                <div class="contenedor">
+                    <div class="botones">
+                        <button type="button" class="btn btn-primary" id="modalCaja" data-toggle="modal"
+                            data-target="#modalAperturaCaja">
+                            Abrir Caja
+                        </button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-sm">
+                            <thead class="text-center">
+                                <tr>
+                                    <th>Apertura</th>
+                                    <th>Monto Apertura</th>
+                                    <th>Fecha</th>
+                                    <th>Total Efectivo</th>
+                                    <th>Cta.Cte ING</th>
+                                    <th>Cta.Cte EG</th>
+                                    <th>Cierre</th>
+                                    <th>Monto Cierre</th>
+                                    <th>Fecha Cierre</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-center" id="tabla-cajas">
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalAperturaCaja" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="exampleModalLabel">Apertura Caja</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <label>Monto Apertura</label>
+                    <input type="number" class="form-control" id="txtMontoApertura">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btnAbrirCaja">Abrir</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+
+<style type="text/css">
+    body {
+        background: rgb(222, 222, 222);
+    }
+
+    .contenedor {
+        background: #fff;
+        width: 90%;
+        margin-left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .botones {
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+</style>
+
+<script type="text/javascript" src="~/js/Caja/Index.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>

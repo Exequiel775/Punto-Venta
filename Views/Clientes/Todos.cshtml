@@ -1,0 +1,71 @@
+@model List<Servicios.Interface.Persona.ClienteDto>
+
+@{
+    ViewData["Title"] = "Clientes";
+}
+
+<div class="bg-white" class="contenedor-tabla">
+    <div class="p-2 titulo">
+        <h4>Clientes Cargados</h4>
+    </div>
+    <div class="table-responsive tabla-clientes">
+       <table class="table table-sm">
+            <div class="row botones">
+                <div class="col">
+                    <button type="button" class="btn btn-success">Nuevo Cliente</button>
+                </div>
+                <div class="col">
+                    <button type="button" class="btn btn-danger" id="btbActDesacCta">Activar/Desactivar cuenta</button>
+                </div>
+            </div>
+            <thead class="thead-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Apellido y Nombre</th>
+                    <th>¿Cuenta Activa?</th>
+                    <th>¿Tiene Limite?</th>
+                    <th>Limite</th>
+                    <th>Seleccionar</th>
+                    <th>Acciónes</th>
+                </tr>
+            </thead>
+            <tbody id="tabla">
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style type="text/css">
+    body {
+        background-color: rgba(0, 154, 242, 0.2);
+    }
+
+    .titulo {
+        color: black;
+        font-family: 'Times New Roman', Times, serif;
+        text-align: center;
+        padding-bottom: 10px;
+        padding-top: 10px;
+    }
+
+    .tabla-clientes {
+        margin-top: 8px;
+        margin-bottom: 8px;
+        width: 90%;
+        margin-left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .cotenedor-tabla {
+        margin-left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .botones{
+        padding-bottom: 10px;
+        padding-top: 10px;
+    }
+</style>
+
+<script type="text/javascript" src="~/js/Clientes/Cliente.js"></script>

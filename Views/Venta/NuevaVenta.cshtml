@@ -1,0 +1,132 @@
+@{
+    ViewData["Title"] = "NuevaVenta";
+}
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+<div class="row bg-white mt-4">
+    <div class="col-12 col-md-8">
+        <div class="row">
+            <div class="col mt-1 mb-1">
+                <label>Código</label>
+                <input type="number" class="form-control" id="txtCodigo" value="" style="width:100%;" />
+            </div>
+            <div class="col mt-1 mb-1">
+                <label>Número</label>
+                <input type="number" class="form-control" disabled="disabled" id="numero"
+                    value="@ViewBag.NumeroFactura">
+            </div>
+            <div class="m-2">
+                <h4>@Clases.Utiles.IdentidadUsuarioLogin.ApyNom</h4>
+            </div>
+        </div>
+        <div class="table-responsive contenedor-tabla">
+            <table class="table table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Cod. Barra</th>
+                        <th>Articulo</th>
+                        <th>IVA</th>
+                        <th>Cantidad</th>
+                        <th>Precio</th>
+                        <th>Total</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody id="body-venta">
+                </tbody>
+            </table>
+        </div>
+        <div class="totalizadores">
+            <h5>Sub Sotal: <strong id="sub-total" style="color:red"></strong></h5>
+            <h5>Total: <strong id="total" style="color: red;"></strong></h5>
+            <h5>Descuento: <input type="number" value="0" min="0" max="100" class="form-control" id="descuento"></h5>
+        </div>
+    </div>
+    <div class="col-6 col-md-4 mt-8">
+        <div class="border border-danger">
+            <div class="bg-danger p-1 text-center" style="color:white">
+                <h4>VENTA</h4>
+            </div>
+            <div class="m-1">
+                <label>Lista Precio</label>
+                @Html.DropDownList("ListasPrecio", ViewBag.ListasPrecio as IEnumerable<SelectListItem>, htmlAttributes:
+                new { @class = "form-control", id = "cmbListaPrecio" })
+            </div>
+            <div class="m-1">
+                <label>Tipo de Comprobante</label>
+                @Html.DropDownList("TipoComprobante",
+                Html.GetEnumSelectList<Servicios.Interface.Comprobante.TipoComprobante>(),
+                htmlAttributes: new { @class = "form-control", id = "cmbTipoComprobante" })
+            </div>
+            <div class="m-1">
+                <label>Tipo de Pago</label>
+                @Html.DropDownList("TipoPago",
+                Html.GetEnumSelectList<Clases.Utiles.TipoPago>(), htmlAttributes: new { @class = "form-control", @id ="cmbTipoPago" })
+            </div>
+            <div class="m-1">
+                <label>Cliente</label>
+                @Html.DropDownList("Clientes", ViewBag.Clientes as IEnumerable<SelectListItem>, htmlAttributes: new {
+                        @class = "form-control", id = "cmbCliente" })
+            </div>
+            <div class="m-1">
+                <input type="checkbox" />
+                <label>Imprimir Ticket al facturar</label>
+                <button type="button" class="btn btn-success mr-2" id="facturar">Facturar</button>
+            </div>
+            <div class="m-1">
+                <h5>Paga Con</h5>
+                <input type="number" class="form-control" id="pagaCon">
+                <hr>
+                <h5>Vuelto</h5>
+                <input type="number" readonly="readonly" class="form-control" id="vuelto">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-cantidad" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-danger">
+        <h5 class="modal-title" style="color:#fff;" id="titulo-cantidad">Cambiar Cantidad</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <label>Cantidad</label>
+          <input type="number" class="form-control" id="txtNuevaCantidad">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="cambiarCantidad">Cambiar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style type="text/css">
+    body {
+        background-color: rgba(223, 223, 223);
+    }
+
+    .contenedor-tabla {
+        position: relative;
+        overflow: auto;
+        height: 500px;
+        display: block;
+    }
+
+    .totalizadores {
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    .descuento {
+        width: 50%;
+    }
+
+</style>
+
+<script type="text/javascript" src="~/js/Venta/NuevaVenta.js"></script>

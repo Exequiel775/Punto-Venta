@@ -1,0 +1,104 @@
+@model IEnumerable<Servicios.Interface.Localidad.Localidad>
+
+@{
+    ViewData["Title"] = "Localidades";
+}
+
+<div class="row">
+    <div class="col-4">
+        <div class="bg-white">
+            <div class="titulo">
+                <h3>Nueva Localidad</h3>
+            </div>
+            <div class="bg-white form-localidad">
+                <label>Descripción</label>
+                <input type="text" class="form-control" id="txtDescripcion">
+                <label>Provincia</label>
+                <select id="cmbProvincia" class="form-control">
+                    <option>Seleccione una provincia...</option>
+                    @foreach (var item in ViewBag.Provincias as IEnumerable<Servicios.Interface.Provincias.Provincia>)
+                    {
+                        <option value="@item.Id">@item.Descripcion</option>
+                    }
+                </select>
+                <div class="contenedor-boton-guardar">
+                    <button class="btn btn-danger btnGuardar">GRABAR</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-8">
+        <div class="bg-white">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Descripcion</th>
+                            <th>Provincia</th>
+                            <th>Acciónes</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-localidades">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalLocalidad" tabindex="-1" role="dialog" aria-labelledby="modalLocalidadCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-danger" style="color:white">
+                <h5 class="modal-title" id="modalLocalidadTitle">Modificar Localidad</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <label>Descripción</label>
+                <input type="text" class="form-control" id="descripcionLocalidad" />
+                <div class="pt-3">
+                    <label>Provincia</label>
+                    <select class="form-control" id="cmbNuevaProvincia">
+
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btnModificar">Modificar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style type="text/css">
+    body {
+        background-color: rgba(84, 81, 63, 0.2);
+    }
+
+    .titulo {
+        text-decoration: none;
+        font-family: Georgia, 'Times New Roman', Times, serif;
+        font-size: 22px;
+        padding: 8px;
+    }
+
+    .form-localidad {
+        padding: 15px;
+    }
+
+    .contenedor-boton-guardar {
+        padding-top: 8px;
+        padding-bottom: 8px;
+    }
+
+    .modificar-lodalidad {
+        padding: 15px;
+    }
+</style>
+
+<script type="text/javascript" src="~/js/Localidad/Index.js"></script>

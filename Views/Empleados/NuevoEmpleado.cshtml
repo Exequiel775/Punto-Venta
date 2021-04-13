@@ -1,0 +1,181 @@
+@model Servicios.Interface.Persona.EmpleadoDto
+
+@{
+    ViewData["Title"] = "Nuevo Empleado";
+}
+
+@using (Html.BeginForm("NuevoEmpleado", "Empleados", FormMethod.Post, htmlAttributes: new { @id = "form" }))
+{
+    <div class="bg-white contenedor-form">
+        <div class="componentes">
+            <div class="titulo text-center">
+                <h3>NUEVO EMPLEADO</h3>
+                <div class="alert alert-danger" id="mensaje-alerta" style="display: none;">
+
+                </div>
+            </div>
+            <h3 style="color:green">@ViewBag.Mensaje</h3>
+            <div class="campos-formulario">
+                <div class="form-group">
+                    <label>Nombre</label>
+                    <label style="color:red">@Html.ValidationMessageFor(x => x.Nombre)</label>
+                    @Html.TextBoxFor(x => x.Nombre, htmlAttributes: new { @class = "form-control data-form" })
+                </div>
+                <div class="form-group">
+                    <label>Apellido</label>
+                    <label style="color:red">@Html.ValidationMessageFor(x => x.Apellido)</label>
+                    @Html.TextBoxFor(x => x.Apellido, htmlAttributes: new { @class = "form-control data-form" })
+                </div>
+                <div class="form-group">
+                    <label>Dni</label>
+                    <label style="color:red">@Html.ValidationMessageFor(x => x.Dni)</label>
+                    @Html.TextBoxFor(x => x.Dni, htmlAttributes: new { @class = "form-control data-form" })
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label>Provincia</label>
+                        <select class="form-control" id="cmbProvincia">
+                            <option value="-1">Seleccione una Provincia</option>
+                            @foreach (var item in ViewBag.Provincias as List<SelectListItem>)
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col">
+                        <label>Localidad</label>
+                        <label style="color:red">@Html.ValidationMessageFor(x => x.LocalidadId)</label>
+                        <select name="LocalidadId" id="cmbLocalidad" class="form-control">
+
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Dirección</label>
+                    <label style="color:red">@Html.ValidationMessageFor(x => x.Direccion)</label>
+                    @Html.TextBoxFor(x => x.Direccion, htmlAttributes: new { @class = "form-control data-form" })
+                </div>
+            </div>
+            <div class="form-group boton">
+                <input type="submit" class="btn btn-success" value="GRABAR">
+            </div>
+        </div>
+    </div>
+}
+
+
+<style type="text/css">
+    body {
+        background-color: rgba(222, 222, 222);
+    }
+
+    .contenedor-form {
+        margin-left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+    }
+
+    .titulo {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        text-decoration: none;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .campos-formulario {
+        padding-top: 15px;
+        padding-bottom: 15px;
+    }
+
+    .componentes {
+        width: 50%;
+        margin-left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .boton {
+        padding-top: 15px;
+        padding-bottom: 15px;
+    }
+
+    .campo-requerido{
+    border:1px solid darkred;
+    }
+</style>
+
+<script type="text/javascript">
+    document.getElementById('cmbProvincia').onchange = (e) => {
+        CargarLocalidades(e.target.value);
+    }
+
+    const CargarLocalidades = (provincia) => {
+        const comboLocalidad = document.getElementById('cmbLocalidad');
+        comboLocalidad.innerHTML = '';
+
+        let parametro = new FormData();
+        parametro.append('provincia', provincia);
+
+        fetch('/Localidades/JsonLocalidadesProvincia', {
+            method: 'POST',
+            body: parametro
+        })
+            .then(response => response.json())
+            .then(json => {
+                json.localidades.forEach((indice) => {
+                    let option = document.createElement('option');
+
+                    option.text = indice.descripcion;
+                    option.value = indice.id;
+
+                    comboLocalidad.add(option);
+                });
+            })
+    }
+
+    const formulario = document.getElementById('form');
+
+    formulario.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        let data = new FormData(formulario);
+
+        fetch('/Empleados/NuevoEmpleado', {
+            method: 'POST',
+            body: data
+        })
+            .then(response => {
+                if (response.status === 200) {
+                    response.json()
+                        .then(json => {
+                            if (json.finalizado) {
+                                alert("Empleado grabado exitosamente");
+                                formulario.reset();
+                            } else {
+                                const divAlert = document.getElementById('mensaje-alerta');
+                                divAlert.style.display = 'block';
+                                divAlert.textContent = 'Debe completar todos los campos';
+                            }
+                        })
+                }
+            })
+            .catch((error) => {
+                console.log("Error: " + error.message);
+            })
+    });
+
+    function VerificarCampos() {
+
+        const inputs = document.querySelectorAll('.data-form');
+
+        inputs.forEach((campo) => {
+            campo.addEventListener('keyup', (e) => {
+                if (e.target.value === '') {
+                    console.log(e);
+                    console.log(campo);
+                } else {
+                    campo.classList.remove('.campo-requerido');
+                }
+            });
+        })
+    }
+</script>
