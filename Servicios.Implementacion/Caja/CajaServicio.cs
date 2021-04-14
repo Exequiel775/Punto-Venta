@@ -8,6 +8,7 @@ namespace Servicios.Implementacion.Caja
     using System.Linq;
     using System.Collections.Generic;
     using Servicios.Interface.DetalleCaja;
+    using Slapper;
 
     public class CajaServicio : ICajaServicio
     {
@@ -59,14 +60,42 @@ namespace Servicios.Implementacion.Caja
         {
             try
             {
+                /*
                 string query = "SELECT Caja.Id, Caja.UsuarioAperturaId, Caja.MontoApertura, Caja.FechaApertura, Caja.UsuarioCierreId, Caja.MontoCierre, " +
                 "Caja.CuentaCorrienteEntrada, Caja.CuentaCorrienteSalida, apertura.Nombre AS NombreUsuarioApertura, cierre.Nombre AS NombreUsuarioCierre, " + 
                 "SUM(DetalleCaja.Monto) AS TotalEfectivoEntrada FROM Caja " +
                 "INNER JOIN Usuario apertura ON apertura.Id = Caja.UsuarioAperturaId " +
                 "LEFT JOIN Usuario cierre ON cierre.Id = Caja.UsuarioCierreId " +
                 "INNER JOIN DetalleCaja ON Caja.Id = DetalleCaja.CajaId " + 
-                "GROUP BY Caja.Id, apertura.Nombre, cierre.Nombre";
+                "GROUP BY Caja.Id, apertura.Nombre, cierre.Nombre";*/
 
+                var queryMapeado = _db.Query<dynamic>(sql: "SELECT caja.id as id, caja.usuarioAperturaId, caja.montoapertura, " + 
+                "caja.fechaApertura, caja.usuarioCierreId, caja.fechacierre, caja.montocierre, caja.totalefectivoentrada, " +
+                "caja.cuentacorrienteentrada, caja.cuentacorrientesalida, detallecaja.cajaid as DetalleCajas_CajaId, " +
+                "detalleCaja.monto as DetalleCajas_Monto, detalleCaja.tipopago as DetalleCajas_TipoPago FROM caja " +
+                "INNER JOIN detallecaja ON detallecaja.cajaid = caja.id");
+
+                AutoMapper.Configuration.AddIdentifier(typeof(Caja), "id");
+                AutoMapper.Configuration.AddIdentifier(typeof(DetalleCaja), "Monto");
+
+                var cajas = (AutoMapper.MapDynamic<Caja>(queryMapeado) as IEnumerable<Caja>).ToList();
+
+
+                return cajas.Select(x => new Caja
+                {
+                    Id = x.Id,
+                    UsuarioAperturaId = x.UsuarioAperturaId,
+                    MontoApertura = x.MontoApertura,
+                    FechaApertura = x.FechaApertura,
+                    NombreUsuarioApertura = x.NombreUsuarioApertura,
+                    UsuarioCierreId = x.UsuarioCierreId.HasValue ? x.UsuarioCierreId.Value : -1,
+                    NombreUsuarioCierre = x.NombreUsuarioCierre ?? "--",
+                    MontoCierre = x.MontoCierre.HasValue ? x.MontoCierre.Value : 0.00m,
+                    TotalEfectivoEntrada = x.DetalleCajas.Where(x => x.TipoPago == TipoPago.Efectivo).Sum(x => x.Monto),//x.TotalEfectivoEntrada.HasValue ? x.TotalEfectivoEntrada.Value : 0.00m,
+                    CuentaCorrienteEntrada = x.CuentaCorrienteEntrada.HasValue ? x.CuentaCorrienteEntrada.Value : 0.00m,
+                    CuentaCorrienteSalida = x.DetalleCajas.Where(x => x.TipoPago == TipoPago.Cuenta_Corriente).Sum(x => x.Monto)//x.CuentaCorrienteSalida.HasValue ? x.CuentaCorrienteEntrada.Value : 0.00m,
+                }).ToList();
+                /*
                 return _db.Query<Caja>(sql: query, commandType: System.Data.CommandType.Text)
                 .Select(x => new Caja
                 {
@@ -82,7 +111,7 @@ namespace Servicios.Implementacion.Caja
                     CuentaCorrienteEntrada = x.CuentaCorrienteEntrada.HasValue ? x.CuentaCorrienteEntrada.Value : 0.00m,
                     CuentaCorrienteSalida = x.CuentaCorrienteSalida.HasValue ? x.CuentaCorrienteEntrada.Value : 0.00m,
                     FechaCierre = x.FechaCierre
-                }).ToList();
+                }).ToList();*/
             }
             catch (Exception e)
             {

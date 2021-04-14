@@ -75,3 +75,4 @@ C:\Users\User\XCommerce\obj\Debug\net5.0\Razor\Views\Configuracion\Index.cshtml.
 C:\Users\User\XCommerce\obj\Debug\net5.0\Razor\Views\Seguridad\Usuarios.cshtml.g.cs
 C:\Users\User\XCommerce\obj\Debug\net5.0\Razor\Views\Venta\MasVendidos.cshtml.g.cs
 C:\Users\User\XCommerce\obj\Debug\net5.0\Razor\Views\Caja\Index.cshtml.g.cs
+C:\Users\User\XCommerce\bin\Debug\net5.0\Slapper.dll

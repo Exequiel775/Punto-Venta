@@ -251,7 +251,7 @@ function ObtenerSubTotal() {
         let row = $(this);
 
         cantidad = parseInt(row.find('td').eq(4).text());
-        total += parseFloat(row.find('td').eq(5).text() * cantidad);
+        total += parseFloat(row.find('td').eq(6).text() * cantidad);
     });
 
     return total.toFixed(2);
@@ -370,6 +370,7 @@ function FormatearGrilla() {
 }
 
 const CalcularVuelto = (totalPagar, paga) => {
+    console.log(`Paga con: ${paga}, total a pagar: ${totalPagar}`);
     return paga - totalPagar;
 }
 

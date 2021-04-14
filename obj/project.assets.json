@@ -1221,6 +1221,15 @@
           }
         }
       },
+      "Slapper.AutoMapper/2.0.4": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.1/Slapper.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.1/Slapper.dll": {}
+        }
+      },
       "System.AppContext/4.3.0": {
         "type": "package",
         "dependencies": {
@@ -3920,6 +3929,20 @@
         "runtime.ubuntu.16.10-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
         "runtime.ubuntu.16.10-x64.runtime.native.system.security.cryptography.openssl.nuspec",
         "runtimes/ubuntu.16.10-x64/native/System.Security.Cryptography.Native.OpenSsl.so"
+      ]
+    },
+    "Slapper.AutoMapper/2.0.4": {
+      "sha512": "fgoLKk64f0NESOWyTA/lMldGU55HWKR6jQwgQWGvdHSHDm7XAOm0KPfBhku7txN/V2RIJGMZO8gnFAZFWhNBQw==",
+      "type": "package",
+      "path": "slapper.automapper/2.0.4",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE",
+        "lib/net47/Slapper.dll",
+        "lib/netstandard2.1/Slapper.dll",
+        "slapper.automapper.2.0.4.nupkg.sha512",
+        "slapper.automapper.nuspec"
       ]
     },
     "System.AppContext/4.3.0": {
@@ -7927,7 +7950,8 @@
     "net5.0": [
       "Dapper >= 2.0.78",
       "Npgsql >= 5.0.3",
-      "Rotativa.AspNetCore >= 1.2.0-beta"
+      "Rotativa.AspNetCore >= 1.2.0-beta",
+      "Slapper.AutoMapper >= 2.0.4"
     ]
   },
   "packageFolders": {
@@ -7980,6 +8004,10 @@
           "Rotativa.AspNetCore": {
             "target": "Package",
             "version": "[1.2.0-beta, )"
+          },
+          "Slapper.AutoMapper": {
+            "target": "Package",
+            "version": "[2.0.4, )"
           }
         },
         "imports": [
