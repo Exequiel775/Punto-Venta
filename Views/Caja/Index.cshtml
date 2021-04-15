@@ -52,24 +52,72 @@
         <div class="row">
             <div class="col-12 col-lg-12 col-md-12 col-sm-12">
                 <div class="contenedor">
-                    <div class="botones">
-                        <button type="button" class="btn btn-primary" id="modalCaja" data-toggle="modal"
-                            data-target="#modalAperturaCaja">
-                            Abrir Caja
-                        </button>
+                    <div class="row">
+                        <div class="col-12 col-sm-12 col-lg-6 col-xl-6 col-md-6">
+                            <div class="botones">
+                                <button type="button" class="btn btn-primary" id="modalCaja">
+                                Abrir Caja
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-12 col-lg-6 col-xl-6 col-md-6">
+                            <div class="botones">
+                                <div class="alert alert-danger" role="alert">
+                                    <p><strong>INFO: </strong>La caja que en color verde es la que esta abierta.</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+            
                     <div class="table-responsive">
                         <table class="table table-striped table-sm">
                             <thead class="text-center">
                                 <tr>
                                     <th>Apertura</th>
-                                    <th>Monto Apertura</th>
+                                    <th>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="18"
+                                            fill="currentColor" class="bi bi-cash" viewBox="0 0 16 16">
+                                            <path d="M8 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" />
+                                            <path
+                                                d="M0 4a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V4zm3 0a2 2 0 0 1-2 2v4a2 2 0 0 1 2 2h10a2 2 0 0 1 2-2V6a2 2 0 0 1-2-2H3z" />
+                                        </svg>
+                                        Monto Apertura
+                                    </th>
                                     <th>Fecha</th>
-                                    <th>Total Efectivo</th>
-                                    <th>Cta.Cte ING</th>
-                                    <th>Cta.Cte EG</th>
+                                    <th>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="18"
+                                            fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 16 16">
+                                            <path
+                                                d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z" />
+                                        </svg>
+                                        Total Efectivo
+                                    </th>
+                                    <th>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                            fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 16 16">
+                                            <path
+                                                d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z" />
+                                        </svg>
+                                        Cta.Cte ING
+                                    </th>
+                                    <th>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                            fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                                            <path
+                                                d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+                                        </svg>
+                                        Cta.Cte EG
+                                    </th>
                                     <th>Cierre</th>
-                                    <th>Monto Cierre</th>
+                                    <th>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="18"
+                                            fill="currentColor" class="bi bi-cash" viewBox="0 0 16 16">
+                                            <path d="M8 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" />
+                                            <path
+                                                d="M0 4a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V4zm3 0a2 2 0 0 1-2 2v4a2 2 0 0 1 2 2h10a2 2 0 0 1 2-2V6a2 2 0 0 1-2-2H3z" />
+                                        </svg>
+                                        Monto Cierre
+                                    </th>
                                     <th>Fecha Cierre</th>
                                 </tr>
                             </thead>
@@ -125,6 +173,7 @@
     }
 </style>
 
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script type="text/javascript" src="~/js/Caja/Index.js"></script>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

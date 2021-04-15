@@ -47,6 +47,12 @@ namespace XCommerce.Controllers
             return Json(new { cajas = _cajaServicio.Get() });
         }
 
+        [HttpGet]
+        public JsonResult VerificarCajaAbierta()
+        {
+            return Json(new { existe = _cajaServicio.ExisteCajaAbierta() });
+        }
+
         public IActionResult VerificarSiEstaLogueado()
         {
             if (!IdentidadUsuarioLogin.EstaLogueado)

@@ -91,9 +91,9 @@ namespace Servicios.Implementacion.Caja
                     UsuarioCierreId = x.UsuarioCierreId.HasValue ? x.UsuarioCierreId.Value : -1,
                     NombreUsuarioCierre = x.NombreUsuarioCierre ?? "--",
                     MontoCierre = x.MontoCierre.HasValue ? x.MontoCierre.Value : 0.00m,
-                    TotalEfectivoEntrada = x.DetalleCajas.Where(x => x.TipoPago == TipoPago.Efectivo).Sum(x => x.Monto),//x.TotalEfectivoEntrada.HasValue ? x.TotalEfectivoEntrada.Value : 0.00m,
+                    TotalEfectivoEntrada = x.DetalleCajas.Where(t => t.TipoPago == TipoPago.Efectivo).Sum(d => d.Monto),//x.TotalEfectivoEntrada.HasValue ? x.TotalEfectivoEntrada.Value : 0.00m,
                     CuentaCorrienteEntrada = x.CuentaCorrienteEntrada.HasValue ? x.CuentaCorrienteEntrada.Value : 0.00m,
-                    CuentaCorrienteSalida = x.DetalleCajas.Where(x => x.TipoPago == TipoPago.Cuenta_Corriente).Sum(x => x.Monto)//x.CuentaCorrienteSalida.HasValue ? x.CuentaCorrienteEntrada.Value : 0.00m,
+                    CuentaCorrienteSalida = x.DetalleCajas.Where(c => c.TipoPago == TipoPago.Cuenta_Corriente).Sum(d => d.Monto)//x.CuentaCorrienteSalida.HasValue ? x.CuentaCorrienteEntrada.Value : 0.00m,
                 }).ToList();
                 /*
                 return _db.Query<Caja>(sql: query, commandType: System.Data.CommandType.Text)
