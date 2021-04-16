@@ -9,5 +9,6 @@ namespace Servicios.Interface.Caja
         bool ExisteCajaAbierta();
         long ObtenerCajaAbierta(); 
         IEnumerable<Caja> Get();
+        Caja GetById(long id);
     }
 }

@@ -53,6 +53,38 @@ namespace XCommerce.Controllers
             return Json(new { existe = _cajaServicio.ExisteCajaAbierta() });
         }
 
+        [HttpPost]
+        public JsonResult JsonCajaById([FromBody] long caja)
+        {
+            try
+            {
+                var cajita = _cajaServicio.GetById(caja);
+                return Json(new { cajaSeleccionada = cajita } );
+            }
+            catch(System.Exception err)
+            {
+                throw new System.Exception(err.Message);
+            }
+        }
+
+        [HttpPost]
+        public JsonResult CerrarCaja([FromBody] long caja)
+        {
+            var datosCaja = _cajaServicio.GetById(caja);
+
+            var cajaCerrar = new Caja
+            {
+                UsuarioCierreId = IdentidadUsuarioLogin.UsuarioId,
+                MontoCierre = datosCaja.TotalEfectivoEntrada,
+                CuentaCorrienteEntrada = datosCaja.CuentaCorrienteEntrada,
+                CuentaCorrienteSalida = datosCaja.CuentaCorrienteSalida,
+                TotalEfectivoEntrada = datosCaja.TotalEfectivoEntrada,
+                Id = caja
+            };
+
+            return Json(new { finalizado = _cajaServicio.CerrarCaja(cajaCerrar) });
+        }
+
         public IActionResult VerificarSiEstaLogueado()
         {
             if (!IdentidadUsuarioLogin.EstaLogueado)

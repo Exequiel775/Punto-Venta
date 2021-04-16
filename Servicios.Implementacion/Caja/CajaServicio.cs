@@ -44,7 +44,33 @@ namespace Servicios.Implementacion.Caja
 
         public bool CerrarCaja(Caja caja)
         {
-            return true;
+            try
+            {
+                string query = "UPDATE Caja SET UsuarioCierreId = @UsuarioCierre, " +
+                "FechaCierre = @FechaCierre, " +
+                "MontoCierre = @MontoCierre, " +
+                "TotalEfectivoEntrada = @TotalEfectivo, " +
+                "CuentaCorrienteEntrada = @CtaCteEntrada, " +
+                "CuentaCorrienteSalida = @CtaCteSalida " +
+                "WHERE Id = @ID";
+
+                var parametros = new DynamicParameters();
+                parametros.Add("@UsuarioCierre", caja.UsuarioCierreId);
+                parametros.Add("@FechaCierre", DateTime.Now);
+                parametros.Add("@MontoCierre", caja.MontoCierre);
+                parametros.Add("@TotalEfectivo", caja.TotalEfectivoEntrada);
+                parametros.Add("@CtaCteEntrada", caja.CuentaCorrienteEntrada);
+                parametros.Add("@CtaCteSalida", caja.CuentaCorrienteSalida);
+                parametros.Add("@ID", caja.Id);
+
+                _db.Execute(sql: query, param: parametros, commandType: System.Data.CommandType.Text);
+
+                return true;
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
 
         public bool ExisteCajaAbierta()
@@ -91,9 +117,10 @@ namespace Servicios.Implementacion.Caja
                     UsuarioCierreId = x.UsuarioCierreId.HasValue ? x.UsuarioCierreId.Value : -1,
                     NombreUsuarioCierre = x.NombreUsuarioCierre ?? "--",
                     MontoCierre = x.MontoCierre.HasValue ? x.MontoCierre.Value : 0.00m,
-                    TotalEfectivoEntrada = x.DetalleCajas.Where(t => t.TipoPago == TipoPago.Efectivo).Sum(d => d.Monto),//x.TotalEfectivoEntrada.HasValue ? x.TotalEfectivoEntrada.Value : 0.00m,
+                    FechaCierre = x.FechaCierre.HasValue ? x.FechaCierre.Value : null,
+                    TotalEfectivoEntrada = x.TotalEfectivoEntrada.HasValue ? x.TotalEfectivoEntrada.Value : x.DetalleCajas.Where(t => t.TipoPago == TipoPago.Efectivo).Sum(d => d.Monto),//x.TotalEfectivoEntrada.HasValue ? x.TotalEfectivoEntrada.Value : 0.00m,
                     CuentaCorrienteEntrada = x.CuentaCorrienteEntrada.HasValue ? x.CuentaCorrienteEntrada.Value : 0.00m,
-                    CuentaCorrienteSalida = x.DetalleCajas.Where(c => c.TipoPago == TipoPago.Cuenta_Corriente).Sum(d => d.Monto)//x.CuentaCorrienteSalida.HasValue ? x.CuentaCorrienteEntrada.Value : 0.00m,
+                    CuentaCorrienteSalida = x.CuentaCorrienteSalida.HasValue ? x.CuentaCorrienteSalida.Value : x.DetalleCajas.Where(c => c.TipoPago == TipoPago.Cuenta_Corriente).Sum(d => d.Monto)//x.CuentaCorrienteSalida.HasValue ? x.CuentaCorrienteEntrada.Value : 0.00m,
                 }).ToList();
                 /*
                 return _db.Query<Caja>(sql: query, commandType: System.Data.CommandType.Text)
@@ -117,6 +144,63 @@ namespace Servicios.Implementacion.Caja
             {
                 throw new Exception(e.Message);
             }
+        }
+
+        public Caja GetById(long id)
+        { 
+            var queryMapeado = _db.Query<dynamic>(sql: "SELECT caja.id as id, caja.usuarioAperturaId, caja.montoapertura, " + 
+                "caja.fechaApertura, caja.usuarioCierreId, caja.fechacierre, caja.montocierre, caja.totalefectivoentrada, " +
+                "caja.cuentacorrienteentrada, caja.cuentacorrientesalida, detallecaja.cajaid as DetalleCajas_CajaId, " +
+                "detalleCaja.monto as DetalleCajas_Monto, detalleCaja.tipopago as DetalleCajas_TipoPago FROM caja " +
+                "INNER JOIN detallecaja ON detallecaja.cajaid = caja.id");
+
+                AutoMapper.Configuration.AddIdentifier(typeof(Caja), "id");
+                AutoMapper.Configuration.AddIdentifier(typeof(DetalleCaja), "Monto");
+
+                var cajas = (AutoMapper.MapDynamic<Caja>(queryMapeado) as IEnumerable<Caja>).ToList();
+
+                return cajas.Select(x => new Caja
+                {
+                    Id = x.Id,
+                    UsuarioAperturaId = x.UsuarioAperturaId,
+                    MontoApertura = x.MontoApertura,
+                    FechaApertura = x.FechaApertura,
+                    NombreUsuarioApertura = x.NombreUsuarioApertura,
+                    UsuarioCierreId = x.UsuarioCierreId.HasValue ? x.UsuarioCierreId.Value : -1,
+                    NombreUsuarioCierre = x.NombreUsuarioCierre ?? "--",
+                    MontoCierre = x.MontoCierre.HasValue ? x.MontoCierre.Value : 0.00m,
+                    TotalEfectivoEntrada = x.DetalleCajas.Where(t => t.TipoPago == TipoPago.Efectivo).Sum(d => d.Monto),//x.TotalEfectivoEntrada.HasValue ? x.TotalEfectivoEntrada.Value : 0.00m,
+                    CuentaCorrienteEntrada = x.CuentaCorrienteEntrada.HasValue ? x.CuentaCorrienteEntrada.Value : 0.00m,
+                    CuentaCorrienteSalida = x.DetalleCajas.Where(c => c.TipoPago == TipoPago.Cuenta_Corriente).Sum(d => d.Monto)//x.CuentaCorrienteSalida.HasValue ? x.CuentaCorrienteEntrada.Value : 0.00m,
+                }).FirstOrDefault(x => x.Id == id);
+
+            /*
+            var query = "SELECT caja.id as id, caja.usuarioAperturaId, caja.montoapertura, " +
+            "caja.fechaApertura, caja.usuarioCierreId, caja.fechacierre, caja.montocierre, caja.totalefectivoentrada, " +
+            "caja.cuentacorrienteentrada, caja.cuentacorrientesalida, detallecaja.cajaid as DetalleCajas_CajaId, " +
+            "detalleCaja.monto as DetalleCajas_Monto, detalleCaja.tipopago as DetalleCajas_TipoPago FROM caja " +
+            "INNER JOIN detallecaja ON detallecaja.cajaid = caja.id " + 
+            "WHERE caja.id = @ID";
+            
+            var dynamicQuery = _db.QueryFirstOrDefault<dynamic>(sql: query, param: new {@ID = id});
+
+            AutoMapper.Configuration.AddIdentifier(typeof(Caja), "id");
+            AutoMapper.Configuration.AddIdentifier(typeof(DetalleCaja), "Monto");
+
+            var cajaSeleccionada = (AutoMapper.MapDynamic<Caja>(dynamicQuery) as Caja);
+
+            return new Caja
+            {
+                Id = cajaSeleccionada.Id,
+                UsuarioAperturaId = cajaSeleccionada.UsuarioAperturaId,
+                MontoApertura = cajaSeleccionada.MontoApertura,
+                FechaApertura = cajaSeleccionada.FechaApertura,
+                TotalEfectivoEntrada = cajaSeleccionada.DetalleCajas.Where(x => x.TipoPago == TipoPago.Efectivo).Sum(e => e.Monto),
+                CuentaCorrienteEntrada = cajaSeleccionada.CuentaCorrienteEntrada.HasValue ? cajaSeleccionada.CuentaCorrienteEntrada
+                .Value : 0.00m,
+                CuentaCorrienteSalida = cajaSeleccionada.DetalleCajas.Where(x => x.TipoPago == TipoPago.Cuenta_Corriente).Sum(c => c.Monto)
+            };
+            */
         }
 
         public long ObtenerCajaAbierta()

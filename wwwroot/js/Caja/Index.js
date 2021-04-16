@@ -1,3 +1,5 @@
+var _cajaSeleccionadaEliminar = -1;
+
 document.addEventListener('DOMContentLoaded', () =>  {
     ActualizarTabla();
 });
@@ -28,7 +30,31 @@ function ActualizarTabla() {
                         <td>${elemento.nombreUsuarioCierre}</td>
                         <td>${elemento.montoCierre}</td>
                         <td>${elemento.fechaCierreStr}</td>
+                        <td></td>
                         `
+
+                        let botonCerrar = document.createElement('button');
+                        botonCerrar.classList.add('btn', 'btn-danger');
+                        botonCerrar.value = elemento.id;
+                        botonCerrar.innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="18" fill="currentColor" class="bi bi-inboxes-fill" viewBox="0 0 16 16">
+                        <path d="M4.98 1a.5.5 0 0 0-.39.188L1.54 5H6a.5.5 0 0 1 .5.5 1.5 1.5 0 0 0 3 0A.5.5 0 0 1 10 5h4.46l-3.05-3.812A.5.5 0 0 0 11.02 1H4.98zM3.81.563A1.5 1.5 0 0 1 4.98 0h6.04a1.5 1.5 0 0 1 1.17.563l3.7 4.625a.5.5 0 0 1 .106.374l-.39 3.124A1.5 1.5 0 0 1 14.117 10H1.883A1.5 1.5 0 0 1 .394 8.686l-.39-3.124a.5.5 0 0 1 .106-.374L3.81.563zM.125 11.17A.5.5 0 0 1 .5 11H6a.5.5 0 0 1 .5.5 1.5 1.5 0 0 0 3 0 .5.5 0 0 1 .5-.5h5.5a.5.5 0 0 1 .496.562l-.39 3.124A1.5 1.5 0 0 1 14.117 16H1.883a1.5 1.5 0 0 1-1.489-1.314l-.39-3.124a.5.5 0 0 1 .121-.393z"/>
+                        </svg>
+                        `
+                        botonCerrar.onclick = (e) => {
+                            _cajaSeleccionadaEliminar = e.target.value;
+                            $('#modalCierreCaja').modal('show');
+                            $('#modalCierreCaja').show('fast');
+                            ObtenerDatosCaja(e.target.value)
+                            .then(result => {
+                                var objetoCaja = JSON.parse(result);
+                                document.getElementById('totalEfectivo').textContent = `$${objetoCaja.cajaSeleccionada.totalEfectivoEntrada}`
+                                document.getElementById('ctacteSalida').textContent = `$${objetoCaja.cajaSeleccionada.cuentaCorrienteSalida}`
+                                document.getElementById('totalRecaudado').textContent = `$${objetoCaja.cajaSeleccionada.totalEfectivoEntrada}`
+                            })
+                        }
+
+                        row.children[9].appendChild(botonCerrar);
                     }else {
 
                         row.innerHTML = `
@@ -41,7 +67,19 @@ function ActualizarTabla() {
                         <td>${elemento.nombreUsuarioCierre}</td>
                         <td>${elemento.montoCierre}</td>
                         <td>${elemento.fechaCierreStr}</td>
+                        <td></td>
                         `
+
+                        let botonCerrar = document.createElement('button');
+                        botonCerrar.classList.add('btn', 'btn-danger');
+                        botonCerrar.value = elemento.id;
+                        botonCerrar.innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="18" fill="currentColor" class="bi bi-inboxes-fill" viewBox="0 0 16 16">
+                        <path d="M4.98 1a.5.5 0 0 0-.39.188L1.54 5H6a.5.5 0 0 1 .5.5 1.5 1.5 0 0 0 3 0A.5.5 0 0 1 10 5h4.46l-3.05-3.812A.5.5 0 0 0 11.02 1H4.98zM3.81.563A1.5 1.5 0 0 1 4.98 0h6.04a1.5 1.5 0 0 1 1.17.563l3.7 4.625a.5.5 0 0 1 .106.374l-.39 3.124A1.5 1.5 0 0 1 14.117 10H1.883A1.5 1.5 0 0 1 .394 8.686l-.39-3.124a.5.5 0 0 1 .106-.374L3.81.563zM.125 11.17A.5.5 0 0 1 .5 11H6a.5.5 0 0 1 .5.5 1.5 1.5 0 0 0 3 0 .5.5 0 0 1 .5-.5h5.5a.5.5 0 0 1 .496.562l-.39 3.124A1.5 1.5 0 0 1 14.117 16H1.883a1.5 1.5 0 0 1-1.489-1.314l-.39-3.124a.5.5 0 0 1 .121-.393z"/>
+                        </svg>
+                        `
+
+                        row.children[9].appendChild(botonCerrar);
                     }
                 });
             })
@@ -52,7 +90,10 @@ function ActualizarTabla() {
 document.getElementById('modalCaja').onclick = () => {
 
     VerificarSiExisteCajaAbierta().then(result => {
-        if (result) {
+
+        var objeto = JSON.parse(result);
+
+        if (objeto.existe) {
             Swal.fire({
                 icon: 'error',
                 title: 'Caja Abierta',
@@ -94,6 +135,25 @@ document.getElementById('btnAbrirCaja').onclick = () => {
     })
 }
 
+document.getElementById('btnCerrarCaja').onclick = () => {
+    fetch('/Caja/CerrarCaja', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(_cajaSeleccionadaEliminar)
+    })
+    .then(response => response.json())
+    .then(json => {
+        if (json.finalizado){
+            alert("Cerrada");
+            ActualizarTabla();
+        }else{
+            alert("ERror al cerrar caja");
+        }
+    })
+}
+
 async function VerificarSiExisteCajaAbierta()
 {
     return await fetch('/Caja/VerificarCajaAbierta',{
@@ -114,4 +174,15 @@ async function VerificarSiExisteCajaAbierta()
         console.log(error.message);
         return true;
     });*/
+}
+
+async function ObtenerDatosCaja(caja){
+    return await fetch('/Caja/JsonCajaById', { 
+        method:'POST',
+        headers:{
+            'Content-Type':'application/json'
+        },
+        body: JSON.stringify(caja)
+    })
+    .then(response => response.text());
 }
