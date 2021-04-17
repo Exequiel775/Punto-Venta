@@ -30,6 +30,8 @@ namespace XCommerce
     using Servicios.Implementacion.Configuracion;
     using Servicios.Interface.Caja;
     using Servicios.Implementacion.Caja;
+    using Servicios.Interface.Marca;
+    using Servicios.Implementacion.Marca;
     using Rotativa;
     public class Startup
     {
@@ -60,6 +62,8 @@ namespace XCommerce
             services.AddTransient<IUsuarioServicio, UsuarioServicio>();
             services.AddTransient<IConfiguracionServicio, ConfiguracionServicio>();
             services.AddTransient<ICajaServicio, CajaServicio>();
+            services.AddTransient<IArticuloServicio, ArticuloServicio>();
+            services.AddTransient<IMarcaServicio, MarcaServicio>();
             
             services.AddControllersWithViews();
             services.AddMvc();

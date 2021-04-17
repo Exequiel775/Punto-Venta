@@ -1,0 +1,77 @@
+@model Servicios.Interface.Articulos.Articulo
+@{
+    ViewData["Title"] = "Nuevo Articulo";
+}
+
+@using(Html.BeginForm("NuevoArticulo", "Articulo",FormMethod.Post, new { enctype = "multipart/form-data", @id = "formArticulo" }))
+{
+    <div class="row">
+        <div class="col-sm-12 col-12 col-md-7 col-lg-7 col-xl-7">
+            <div class="row">
+                <div class="col-sm-6 col-6 col-lg-6 col-xl-6">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.Codigo)
+                        @Html.TextBoxFor(x => x.Codigo, htmlAttributes: new { @class ="form-control", @type="number" })
+                    </div>
+                </div>
+                <div class="col-sm-6 col-6 col-lg-6 col-xl-6">
+                    <div class="form-group">
+                        @Html.Label("Codigo Barra")
+                        @Html.TextBoxFor(x => x.CodigoBarra, htmlAttributes: new { @class="form-control", @type="number" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 col-12 col-md-8 col-lg-8 col-xl-8">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.Descripcion)
+                        @Html.TextBoxFor(x => x.Descripcion, htmlAttributes: new { @class="form-control" })
+                    </div>
+                </div>
+                <div class="col-sm-12 col-12 col-md-4 col-lg-4 col-xl-4">
+                    <div class="form-group">
+                       <label>Stock</label>
+                       @Html.TextBoxFor(x => x.Stock, htmlAttributes: new { @class="form-control", @type="number" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 col-12 col-md-4 col-lg-4 col-xl-4">
+                    <label>Marca</label>
+                    @Html.DropDownListFor(x => x.MarcaId, ViewBag.Marcas as IEnumerable<SelectListItem>, new { @class ="form-control" })
+                </div>
+                <div class="col-sm-12 col-12 col-md-4 col-lg-4 col-xl-4">
+                    <label>IVA</label>
+                    @Html.DropDownListFor(x => x.IvaId, ViewBag.Ivas as IEnumerable<SelectListItem>, htmlAttributes: new { @class ="form-control" })
+                </div>
+                <div class="col-sm-12 col-12 col-md-4 col-lg-4 col-xl-4">
+                    <label>Rubro</label>
+                    @Html.DropDownListFor(x => x.RubroId, ViewBag.Rubros as IEnumerable<SelectListItem>, htmlAttributes: new { @class ="form-control" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                    <div class="form-group">
+                       <label>Precio Venta</label>>
+                       @Html.TextBoxFor(x => x.PrecioVenta, new { @class ="form-control" })
+                    </div>
+                </div>
+                <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                    <div class="form-group">
+                        <label>Precio Público</label>
+                        @Html.TextBoxFor(x => x.PrecioPublico, new { @class="form-control" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-12 col-md-5 col-lg-5 col-xl-5">
+            <div class="custom-file">
+                <input type="file" name="imagen" class="custom-file-input" id="customFile">
+                <label class="custom-file-label" for="customFile">Elija una imagen</label>
+            </div>
+        </div>
+    </div>
+    <div class="mt-3 mb-3">
+        <input type="submit" class="btn btn-success" value="GUARDAR">
+    </div>
+}

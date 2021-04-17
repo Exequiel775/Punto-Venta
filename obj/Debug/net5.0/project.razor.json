@@ -15709,6 +15709,11 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "c:\\Users\\User\\XCommerce\\Views\\Articulo\\NuevoArticulo.cshtml",
+      "TargetPath": "Views\\Articulo\\NuevoArticulo.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "c:\\Users\\User\\XCommerce\\Views\\Rubros\\Index.cshtml",
       "TargetPath": "Views\\Rubros\\Index.cshtml",
       "FileKind": "mvc"
